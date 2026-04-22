@@ -3,6 +3,7 @@ package com.hs.sbminiloops.request;
 public class LoginRequest {
     private String username;
     private String password;
+    private Integer age;
 
     public LoginRequest(){
 
@@ -19,4 +20,11 @@ public class LoginRequest {
     public void setPassword(String password){
         this.password=password;
     }
+    public Integer getAge(){
+        return age;
+    }
+    public void setAge(Integer age){
+        this.age=age;
+    }
+
 }

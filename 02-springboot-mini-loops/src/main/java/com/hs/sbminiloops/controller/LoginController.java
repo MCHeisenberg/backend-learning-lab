@@ -7,9 +7,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class LoginController {
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public String login(@RequestBody LoginRequest request){
-        return "login request ok:  "+request.getUsername();
+        if(request.getUsername()==null || request.getUsername().isBlank()){
+            return "username is empty";
+        }
+        if(request.getPassword()==null || request.getPassword().isBlank()){
+            return "password is empty";
+        }
+        return "login request ok:  "+request.getUsername()+", age = "+request.getAge();
     }
 
 }
