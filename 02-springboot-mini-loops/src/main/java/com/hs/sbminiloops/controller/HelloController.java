@@ -1,5 +1,6 @@
 package com.hs.sbminiloops.controller;
 
+import com.hs.sbminiloops.response.HelloResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,5 +30,10 @@ public class HelloController {
     @GetMapping("/bye")
     public String bye(){
         return "bye!";
+    }
+
+    @GetMapping("/helloResponse")
+    public HelloResponse hello(){
+        return new HelloResponse("nice to meet you","hs");
     }
 }
