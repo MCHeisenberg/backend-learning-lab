@@ -8,9 +8,9 @@ public class LoginResponse {
 
     public LoginResponse(){}
 
-    public LoginResponse(Boolean success, String message, String username, Integer age){
+    public LoginResponse(Boolean success, String msg, String username, Integer age){
         this.success=success;
-        this.msg=message;
+        this.msg=msg;
         this.username=username;
         this.age=age;
     }
@@ -24,14 +24,14 @@ public class LoginResponse {
     public String getMsg(){
         return msg;
     }
-    public void setMessage(String message){
-        this.msg=message;
+    public void setMsg(String msg){
+        this.msg=msg;
     }
 
     public String getUsername(){
         return username;
     }
-    public void setUsername(String userName){
+    public void setUsername(String username){
         this.username=username;
     }
 
