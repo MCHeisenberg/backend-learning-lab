@@ -15,8 +15,14 @@ public class LoginController{
         this.loginService=loginService;
     }
 
+    @PostMapping("/auth/login")
     public LoginResponse login(@RequestBody LoginRequest request){
         return loginService.login(request);
+    }
+
+    @PostMapping("/auth/mock")
+    public LoginResponse mock(){
+        return loginService.mock();
     }
 
 }
