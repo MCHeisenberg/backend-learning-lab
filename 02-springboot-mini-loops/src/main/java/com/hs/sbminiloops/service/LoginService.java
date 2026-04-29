@@ -10,6 +10,10 @@ public class LoginService {
 
     public LoginResponse login(LoginRequest request){
 
+        if(request == null){
+            return new LoginResponse(false,"request is empty",null,null);
+        }
+
         if(request.getAge()!=null && request.getAge()<0){
             return new LoginResponse(false,"age is invalid",request.getUsername(),null);
         }
@@ -23,7 +27,7 @@ public class LoginService {
         return new LoginResponse(true,"login request ok",request.getUsername(), request.getAge());
     }
 
-    public LoginResponse mock(@RequestParam String name){
+    public LoginResponse mock(String name){
         return new LoginResponse(true,"mock is ok",name,888);
     }
 
