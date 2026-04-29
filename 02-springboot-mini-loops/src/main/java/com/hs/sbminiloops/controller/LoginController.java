@@ -5,6 +5,7 @@ import com.hs.sbminiloops.response.LoginResponse;
 import com.hs.sbminiloops.service.LoginService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,9 +21,23 @@ public class LoginController{
         return loginService.login(request);
     }
 
+    //Controller 里故意保留一点点逻辑再挪走；让两个接口复用一个Service方法
+    @PostMapping("/auth/mock-login")
+    public LoginResponse login2(@RequestBody LoginRequest request){
+//        if(request == null){
+//            return new LoginResponse(false,"request is empty",null,null);
+//        }
+        return loginService.login(request);
+    }
+
     @PostMapping("/auth/mock")
-    public LoginResponse mock(){
-        return loginService.mock();
+    public LoginResponse mock(@RequestParam String name){
+        return loginService.mock(name);
+    }
+
+    @PostMapping("/auth/register-mock")
+    public LoginResponse registerMock(){
+        return loginService.registerMock();
     }
 
 }
