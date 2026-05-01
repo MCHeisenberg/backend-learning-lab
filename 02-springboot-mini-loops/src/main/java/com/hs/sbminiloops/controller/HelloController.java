@@ -1,6 +1,7 @@
 package com.hs.sbminiloops.controller;
 
 import com.hs.sbminiloops.response.HelloResponse;
+import com.hs.sbminiloops.response.Result;
 import com.hs.sbminiloops.service.HelloService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +17,16 @@ public class HelloController {
         this.helloService=helloService;
     }
 
+    @GetMapping("hello-result")
+    public Result<String> helloResult(@RequestParam(defaultValue = "guest") String name){
+        //return new Result<>(true,"hello ok","hello, "+name);
+        return Result.success("hello ok","hello"+name);
+    }
+
     @GetMapping("/hello-service")
     public String helloService(@RequestParam String name){
         return helloService.buildHelloText(name);
     }
-
 
     @GetMapping("/hello")
     public String hello(@RequestParam(required = false) String name,
