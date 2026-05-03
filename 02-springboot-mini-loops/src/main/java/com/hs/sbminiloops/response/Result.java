@@ -4,9 +4,7 @@ public class Result<T> {
     private Boolean success;
     private String msg;
     private T data;
-
-    //b6 变式 4：新增 `code` 字段
-    private Integer code;
+    private Integer code;   //b6 变式 4：新增 `code` 字段
 
     public Result(){}
 
@@ -24,7 +22,6 @@ public class Result<T> {
     public static <T> Result<T> fail(String msg){
         return new Result<>(false,msg,null,400);
     }
-
 
     public Integer getCode(){
         return code;
