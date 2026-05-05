@@ -2,23 +2,23 @@ package com.hs.sbminiloops.response;
 
 public class UserResponse {
 
-    private long id;
+    private Long id;
     private String username;
     private Integer age;
 
     public UserResponse(){}
 
-    public UserResponse(long id,String username,Integer age){
+    public UserResponse(Long id,String username,Integer age){
         this.id=id;
         this.username=username;
         this.age=age;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

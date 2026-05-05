@@ -32,10 +32,10 @@ public class UserService {
 
         //p2b1变式1：新增用户时校验 age 不能为空
         if(request.getAge()==null){
-            return Result.fail("age is rmpty");
+            return Result.fail("age is empty");
         }
 
-        if(request.getAge()!=null && request.getAge()<0){
+        if(request.getAge()<0){
             return Result.fail("age is invalid");
         }
 
@@ -59,8 +59,8 @@ public class UserService {
 
     //p2b1变式4：新增用户后返回列表[练：Result<T> 的 T 可以从 UserResponse 换成 List<UserResponse>。]
     public Result<List<UserResponse>> createMockAndList(){
-        buildUser("mock-user-",18);
-        return Result.success("create mock and query list ok",users);
+        buildUser("mock-user-"+nextId,18);
+        return Result.success("create mock and query list ok",new ArrayList<>(users));
     }
 
     //P2B1加强C：新增计数接口[Result<T> 的 T 还可以是 Integer。]
