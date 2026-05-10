@@ -3,6 +3,7 @@ package com.hs.sbminiloops.service;
 import com.hs.sbminiloops.request.LoginRequest;
 import com.hs.sbminiloops.response.LoginResponse;
 import com.hs.sbminiloops.response.Result;
+import com.hs.sbminiloops.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 @Service

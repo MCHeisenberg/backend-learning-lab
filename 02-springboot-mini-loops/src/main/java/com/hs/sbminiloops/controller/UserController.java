@@ -4,10 +4,7 @@ import com.hs.sbminiloops.request.UserCreateRequest;
 import com.hs.sbminiloops.response.Result;
 import com.hs.sbminiloops.response.UserResponse;
 import com.hs.sbminiloops.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,4 +43,38 @@ public class UserController {
     public Result<Integer> count(){
         return userService.count();
     }
+
+    //P2B2 新增接口
+    @GetMapping("/users/{id}")
+    public Result<UserResponse> findById(@PathVariable Long id){
+        return userService.findById(id);
+    }
+
+    //P2B2变式 2：新增 exists 接口
+    @GetMapping("/users/{id}/exists")
+    public Result<Boolean> exists(@PathVariable Long id){
+        return userService.exists(id);
+    }
+
+    //P2B2变式3：新增查询用户名接口
+    @GetMapping("/users/{id}/name")
+    public Result<String> findNameById(@PathVariable Long id){
+        return userService.findNameById(id);
+    }
+
+    @GetMapping("/users/latest")
+    public Result<UserResponse> latest(){
+        return userService.latest();
+    }
+
+    @GetMapping("/users/first")
+    public Result<UserResponse> first(){
+        return userService.first();
+    }
+
+    @GetMapping("/users/{id}/summary")
+    public Result<String> summary(@PathVariable Long id){
+        return userService.summary(id);
+    }
+
 }
