@@ -3,7 +3,6 @@ package com.hs.sbminiloops.service;
 import com.hs.sbminiloops.request.UserCreateRequest;
 import com.hs.sbminiloops.response.Result;
 import com.hs.sbminiloops.response.UserResponse;
-import org.apache.coyote.http11.upgrade.UpgradeServletOutputStream;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -176,6 +175,19 @@ public class UserService {
         if(removeUser==null)
             return Result.fail("user not found");
         return Result.success("delete user ok",removeUser);
+    }
+
+    public Result<Integer> clear(){
+        int count=users.size();
+        users.clear();
+        return Result.success("clear users ok",count);
+    }
+
+    public Result<UserResponse> deleteFirst(){
+        if(users.isEmpty())
+            return Result.fail("user list is empty");
+        UserResponse removedUser=users.remove(0);
+        return Result.success("delete first user ok",removedUser);
     }
 
 }

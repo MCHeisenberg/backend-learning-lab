@@ -82,11 +82,6 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}/count")
-    public Result<Integer> deleteByIdANdCount(@PathVariable Long id){
-        return userService.deleteByIdAndCount(id);
-    }
-
-    @DeleteMapping("/users/{id}/count")
     public Result<Integer> deleteByIdAndCount(@PathVariable Long id){
         return userService.deleteByIdAndCount(id);
     }
@@ -94,6 +89,16 @@ public class UserController {
     @DeleteMapping("/users/latest")
     public Result<UserResponse> deleteLatest(){
         return userService.deleteLatest();
+    }
+
+    @DeleteMapping("/users")
+    public Result<Integer> clear(){
+        return userService.clear();
+    }
+
+    @DeleteMapping("/users/first")
+    public Result<UserResponse> deleteFirst(){
+        return userService.deleteFirst();
     }
 
 }
