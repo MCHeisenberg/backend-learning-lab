@@ -102,7 +102,7 @@ public class UserService {
         Result<UserResponse> result=findById(id);
         if(result.getSuccess())
             return Result.success("query name by id ok",result.getData().getUsername());
-        return Result.fail("query name by id not ok, "+result.getMsg());
+        return Result.fail(result.getMsg());
     }
 
     public Result<UserResponse> latest(){

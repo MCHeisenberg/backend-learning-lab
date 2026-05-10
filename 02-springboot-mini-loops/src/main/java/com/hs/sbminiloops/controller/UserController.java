@@ -38,7 +38,7 @@ public class UserController {
         return userService.createMockAndList();
     }
 
-    //p2b1变式4：新增用户后返回列表[练：Result<T> 的 T 可以从 UserResponse 换成 List<UserResponse>。]
+
     @GetMapping("/users/count")
     public Result<Integer> count(){
         return userService.count();
