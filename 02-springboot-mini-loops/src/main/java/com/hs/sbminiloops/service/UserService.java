@@ -3,6 +3,7 @@ package com.hs.sbminiloops.service;
 import com.hs.sbminiloops.request.UserCreateRequest;
 import com.hs.sbminiloops.response.Result;
 import com.hs.sbminiloops.response.UserResponse;
+import org.apache.coyote.http11.upgrade.UpgradeServletOutputStream;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,6 +33,21 @@ public class UserService {
     //P2B2 变式 5：把 id 校验也抽成 helper[把重复判断压成更薄的辅助方法。]
     private boolean isInvalidId(Long id){
         return id==null || id<=0;
+    }
+
+    private int findIndexById(Long id){
+        for(int i=0;i<users.size();i++){
+            if(users.get(i).getId().equals(id))
+                return i;
+        }
+        return -1;
+    }
+
+    private UserResponse removeUserOrNull(Long id){
+        int index=findIndexById(id);
+        if(index==-1)
+            return null;
+        return users.remove(index);
     }
 
     public Result<UserResponse> create(UserCreateRequest request){
@@ -126,6 +142,40 @@ public class UserService {
         String text="id="+user.getId()+",username="
                 +user.getUsername()+",age="+user.getAge();
         return Result.success("query user summary ok",text);
+    }
+
+//    public Result<UserResponse> deleteById(Long id){
+//        if(isInvalidId(id))
+//            return Result.fail("id is invalid");
+//
+//        int index = findIndexById(id);
+//        if(index==-1)
+//            return Result.fail("user not found");
+//        UserResponse removeUser=users.remove(index);
+//        return Result.success("delete user ok",removeUser);
+//    }
+
+    public Result<Integer> deleteByIdAndCount(Long id){
+        Result<UserResponse> result=deleteById(id);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+        return Result.success("delete user and query count ok",users.size());
+    }
+
+    public Result<UserResponse> deleteLatest(){
+        if(users.isEmpty())
+            return Result.fail("user list is empty");
+        UserResponse removeUser = users.remove(users.size()-1);
+        return Result.success("delete latest user ok",removeUser);
+    }
+
+    public Result<UserResponse> deleteById(Long id){
+        if(isInvalidId(id))
+            return Result.fail("id is invalid");
+        UserResponse removeUser = removeUserOrNull(id);
+        if(removeUser==null)
+            return Result.fail("user not found");
+        return Result.success("delete user ok",removeUser);
     }
 
 }

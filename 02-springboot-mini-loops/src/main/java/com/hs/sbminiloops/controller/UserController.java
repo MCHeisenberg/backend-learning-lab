@@ -38,7 +38,6 @@ public class UserController {
         return userService.createMockAndList();
     }
 
-
     @GetMapping("/users/count")
     public Result<Integer> count(){
         return userService.count();
@@ -75,6 +74,26 @@ public class UserController {
     @GetMapping("/users/{id}/summary")
     public Result<String> summary(@PathVariable Long id){
         return userService.summary(id);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public Result<UserResponse> deleteById(@PathVariable Long id){
+        return userService.deleteById(id);
+    }
+
+    @DeleteMapping("/users/{id}/count")
+    public Result<Integer> deleteByIdANdCount(@PathVariable Long id){
+        return userService.deleteByIdAndCount(id);
+    }
+
+    @DeleteMapping("/users/{id}/count")
+    public Result<Integer> deleteByIdAndCount(@PathVariable Long id){
+        return userService.deleteByIdAndCount(id);
+    }
+
+    @DeleteMapping("/users/latest")
+    public Result<UserResponse> deleteLatest(){
+        return userService.deleteLatest();
     }
 
 }
