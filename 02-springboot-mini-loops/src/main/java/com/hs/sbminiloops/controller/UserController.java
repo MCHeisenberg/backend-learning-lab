@@ -1,6 +1,7 @@
 package com.hs.sbminiloops.controller;
 
 import com.hs.sbminiloops.request.UserCreateRequest;
+import com.hs.sbminiloops.request.UserUpdateRequest;
 import com.hs.sbminiloops.response.Result;
 import com.hs.sbminiloops.response.UserResponse;
 import com.hs.sbminiloops.service.UserService;
@@ -101,4 +102,15 @@ public class UserController {
         return userService.deleteFirst();
     }
 
+    @PutMapping("/users/{id}")
+    public Result<UserResponse> updateById(@PathVariable Long id,
+                                           @RequestBody UserUpdateRequest request){
+        return userService.updateById(id,request);
+    }
+
+    @PutMapping("/users/{id}/name")
+    public Result<UserResponse> updateName(@PathVariable Long id,
+                                           @RequestBody UserUpdateRequest request){
+        return userService.updateName(id,request);
+    }
 }

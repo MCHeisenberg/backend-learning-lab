@@ -1,6 +1,7 @@
 package com.hs.sbminiloops.service;
 
 import com.hs.sbminiloops.request.UserCreateRequest;
+import com.hs.sbminiloops.request.UserUpdateRequest;
 import com.hs.sbminiloops.response.Result;
 import com.hs.sbminiloops.response.UserResponse;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,15 @@ public class UserService {
         if(index==-1)
             return null;
         return users.remove(index);
+    }
+
+    private Result<UserResponse> checkUserExists(Long id){
+        if(isInvalidId(id))
+            return Result.fail("id is invalid");
+        UserResponse user = findUserOrNull(id);
+        if(user==null)
+            return Result.fail("user not found");
+        return Result.success("user exists",user);
     }
 
     public Result<UserResponse> create(UserCreateRequest request){
@@ -188,6 +198,65 @@ public class UserService {
             return Result.fail("user list is empty");
         UserResponse removedUser=users.remove(0);
         return Result.success("delete first user ok",removedUser);
+    }
+
+    public Result<UserResponse> updateById(Long id, UserUpdateRequest request){
+        if(isInvalidId(id))
+            return Result.fail("id is invalid");
+        if(request==null)
+            return Result.fail("request is empty");
+        if(request.getUsername()==null||request.getUsername().isBlank())
+            return Result.fail("username is empty");
+        if(request.getAge()==null)
+            return Result.fail("age is empty");
+        if(request.getAge()<0)
+            return Result.fail("age is invalid");
+
+        UserResponse user=findUserOrNull(id);
+
+        if(user==null)
+            return Result.fail("user not found");
+
+        user.setUsername(request.getUsername().trim());
+        user.setAge(request.getAge());
+
+        return Result.success("update user ok",user);
+    }
+
+    public Result<UserResponse> updateName(Long id,UserUpdateRequest request){
+//        if(isInvalidId(id))
+//            return Result.fail("id is invalid");
+        if(request==null)
+            return Result.fail("request is empty");
+        if(request.getUsername()==null||request.getUsername().isBlank())
+            return Result.fail("username is empty");
+
+        Result<UserResponse> result=checkUserExists(id);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+        UserResponse user=result.getData();
+
+        user.setUsername(request.getUsername().trim());
+        return Result.success("update username ok",user);
+    }
+
+    public Result<UserResponse> updateAge(Long id,UserUpdateRequest request){
+//        if(isInvalidId(id))
+//            return Result.fail("id is invalid");
+        if(request==null)
+            return Result.fail("request is empty");
+        if(request.getAge()==null)
+            return Result.fail("age is empty");
+        if(request.getAge()<0)
+            return Result.fail("age is invalid");
+
+        Result<UserResponse> result=checkUserExists(id);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+        UserResponse user=result.getData();
+
+        user.setAge(request.getAge());
+        return Result.success("update age ok",user);
     }
 
 }
