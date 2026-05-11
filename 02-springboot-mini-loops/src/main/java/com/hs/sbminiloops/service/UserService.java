@@ -259,4 +259,22 @@ public class UserService {
         return Result.success("update age ok",user);
     }
 
+    public Result<String> updateAndSummary(Long id, UserUpdateRequest request){
+        Result<UserResponse> result=updateById(id,request);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+        UserResponse user=result.getData();
+        String text="id="+user.getId()+",username="+user.getUsername()
+                +",age="+user.getAge();
+        return Result.success("update user and query summary ok",text);
+    }
+
+    public Result<List<UserResponse>> updateAndList(Long id,UserUpdateRequest request){
+        Result<UserResponse> result=updateById(id,request);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+        return Result.success("update user and query list ok",
+                new ArrayList<>(users));
+    }
+
 }

@@ -113,4 +113,17 @@ public class UserController {
                                            @RequestBody UserUpdateRequest request){
         return userService.updateName(id,request);
     }
+
+    @PutMapping("/users/{id}/summary")
+    public Result<String> updateAndSummary(@PathVariable Long id,
+                                           @RequestBody UserUpdateRequest request){
+        return userService.updateAndSummary(id,request);
+    }
+
+    @PutMapping("/users/{id}/list")
+    public Result<List<UserResponse>> updateAndList(@PathVariable Long id,
+                                                    @RequestBody UserUpdateRequest request){
+        return userService.updateAndList(id,request);
+    }
+
 }
