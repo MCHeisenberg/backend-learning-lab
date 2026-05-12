@@ -281,4 +281,29 @@ public class UserService {
                 new ArrayList<>(users));
     }
 
+    public Result<List<UserResponse>> search(String keyword,Integer minAge){
+        if(minAge != null && minAge<0)
+            return Result.fail("minAge is invalid");
+
+        List<UserResponse> result=new ArrayList<>();
+        for(UserResponse user:users){
+            boolean match=true;
+            if(keyword!=null&&!keyword.isBlank()) {
+                String cleanedKeyword = keyword.trim();
+                if(user.getUsername()==null||!user.getUsername().contains(cleanedKeyword))
+                    match=false;
+            }
+
+            if(minAge!=null){
+                if(minAge<0)
+                    return Result.fail("minAge is invalid");
+                if(user.getAge()==null||user.getAge()<minAge)
+                    match=false;
+            }
+            if(match)
+                result.add(user);
+        }
+        return Result.success("search user ok",result);
+    }
+
 }

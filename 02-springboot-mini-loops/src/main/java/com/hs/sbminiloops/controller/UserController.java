@@ -132,4 +132,12 @@ public class UserController {
         return userService.updateAge(id,request);
     }
 
+    @GetMapping("/users/search")
+    public Result<List<UserResponse>> search
+            (@RequestParam(required = false) String keyword
+            ,@RequestParam(required = false)Integer minAge
+            ,@RequestParam(required = false)Integer maxAge){
+        return userService.search(keyword,minAge,maxAge);
+    }
+
 }
