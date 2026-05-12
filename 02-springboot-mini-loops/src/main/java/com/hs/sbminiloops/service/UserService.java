@@ -201,8 +201,12 @@ public class UserService {
     }
 
     public Result<UserResponse> updateById(Long id, UserUpdateRequest request){
-        if(isInvalidId(id))
-            return Result.fail("id is invalid");
+//        if(isInvalidId(id))
+//            return Result.fail("id is invalid");
+        Result<UserResponse> result=checkUserExists(id);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+
         if(request==null)
             return Result.fail("request is empty");
         if(request.getUsername()==null||request.getUsername().isBlank())
@@ -212,10 +216,7 @@ public class UserService {
         if(request.getAge()<0)
             return Result.fail("age is invalid");
 
-        UserResponse user=findUserOrNull(id);
-
-        if(user==null)
-            return Result.fail("user not found");
+        UserResponse user=result.getData();
 
         user.setUsername(request.getUsername().trim());
         user.setAge(request.getAge());
@@ -226,14 +227,16 @@ public class UserService {
     public Result<UserResponse> updateName(Long id,UserUpdateRequest request){
 //        if(isInvalidId(id))
 //            return Result.fail("id is invalid");
+        Result<UserResponse> result=checkUserExists(id);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+
         if(request==null)
             return Result.fail("request is empty");
         if(request.getUsername()==null||request.getUsername().isBlank())
             return Result.fail("username is empty");
 
-        Result<UserResponse> result=checkUserExists(id);
-        if(!result.getSuccess())
-            return Result.fail(result.getMsg());
+
         UserResponse user=result.getData();
 
         user.setUsername(request.getUsername().trim());
@@ -243,6 +246,10 @@ public class UserService {
     public Result<UserResponse> updateAge(Long id,UserUpdateRequest request){
 //        if(isInvalidId(id))
 //            return Result.fail("id is invalid");
+        Result<UserResponse> result=checkUserExists(id);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+
         if(request==null)
             return Result.fail("request is empty");
         if(request.getAge()==null)
@@ -250,9 +257,6 @@ public class UserService {
         if(request.getAge()<0)
             return Result.fail("age is invalid");
 
-        Result<UserResponse> result=checkUserExists(id);
-        if(!result.getSuccess())
-            return Result.fail(result.getMsg());
         UserResponse user=result.getData();
 
         user.setAge(request.getAge());

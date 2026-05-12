@@ -126,4 +126,10 @@ public class UserController {
         return userService.updateAndList(id,request);
     }
 
+    @PutMapping("/users/{id}/age")
+    public Result<UserResponse> updateAge(@PathVariable Long id,
+                                          @RequestBody UserUpdateRequest request){
+        return userService.updateAge(id,request);
+    }
+
 }
