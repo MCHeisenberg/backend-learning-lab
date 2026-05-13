@@ -140,4 +140,31 @@ public class UserController {
         return userService.search(keyword,minAge,maxAge);
     }
 
+    @GetMapping("/users/search/exact")
+    public Result<List<UserResponse>> searchExact(@RequestParam String username){
+        return userService.searchExact(username);
+    }
+
+    @GetMapping("/users/search/first")
+    public Result<UserResponse> searchFirst
+            (@RequestParam(required = false) String keyword,
+             @RequestParam(required = false) Integer minAge,
+             @RequestParam(required = false) Integer maxAge){
+        return userService.searchFirst(keyword,minAge,maxAge);
+    }
+
+    @GetMapping("/users/search/count")
+    public Result<Integer> searchCount(@RequestParam(required = false)String keyword,
+                                       @RequestParam(required = false)Integer minAge,
+                                       @RequestParam(required = false)Integer maxAge){
+        return userService.searchCount(keyword,minAge,maxAge);
+    }
+
+    @GetMapping("/users/search/summary")
+    public Result<String> searchSummary(@RequestParam(required = false)String keyword,
+                                        @RequestParam(required = false)Integer minAge,
+                                        @RequestParam(required = false)Integer maxAge){
+        return userService.searchSummary(keyword,minAge,maxAge);
+    }
+
 }

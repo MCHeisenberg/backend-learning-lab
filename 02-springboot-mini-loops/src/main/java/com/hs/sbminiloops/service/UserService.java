@@ -59,6 +59,33 @@ public class UserService {
         return Result.success("user exists",user);
     }
 
+    private boolean matchUser(UserResponse user,String keyword,Integer minAge,Integer maxAge){
+        if(keyword!=null && !keyword.isBlank()){
+            String cleanedKeyword=keyword.trim();
+            if(user.getUsername()==null||!user.getUsername().contains(cleanedKeyword))
+                return false;
+        }
+        if(minAge!=null){
+            if(user.getAge()==null||user.getAge()<minAge)
+                return false;
+        }
+        if(maxAge!=null) {
+            if (user.getAge() == null || user.getAge() > maxAge)
+                return false;
+        }
+        return true;
+    }
+
+    private Result<Void> validateAgeRange(Integer minAge,Integer maxAge){
+        if(minAge!=null&&minAge<0)
+            return Result.fail("minAge is invalid");
+        if(maxAge!=null&&maxAge<0)
+            return Result.fail("maxAge is invalid");
+        if(minAge!=null&&maxAge!=null&&minAge>maxAge)
+            return Result.fail("age range is invalid");
+        return Result.success("age range ok",null);
+    }
+
     public Result<UserResponse> create(UserCreateRequest request){
         if(request == null)
             return Result.fail("request is empty");
@@ -281,29 +308,82 @@ public class UserService {
                 new ArrayList<>(users));
     }
 
-    public Result<List<UserResponse>> search(String keyword,Integer minAge){
-        if(minAge != null && minAge<0)
-            return Result.fail("minAge is invalid");
+    public Result<List<UserResponse>> search(String keyword,Integer minAge,Integer maxAge){
+//        if(minAge != null && minAge<0)
+//            return Result.fail("minAge is invalid");
+//        if(maxAge!=null&&maxAge<0)
+//            return Result.fail("maxAge is invalid");
+//        if(minAge!=null&&maxAge!=null&&minAge>maxAge)
+//            return Result.fail("age range is invalid");
+        Result<Void> validateResult = validateAgeRange(minAge,maxAge);
+        if(!validateResult.getSuccess())
+            return Result.fail(validateResult.getMsg());
 
         List<UserResponse> result=new ArrayList<>();
-        for(UserResponse user:users){
-            boolean match=true;
-            if(keyword!=null&&!keyword.isBlank()) {
-                String cleanedKeyword = keyword.trim();
-                if(user.getUsername()==null||!user.getUsername().contains(cleanedKeyword))
-                    match=false;
-            }
 
-            if(minAge!=null){
-                if(minAge<0)
-                    return Result.fail("minAge is invalid");
-                if(user.getAge()==null||user.getAge()<minAge)
-                    match=false;
-            }
-            if(match)
+        for(UserResponse user:users){
+//            boolean match=true;
+//            if(keyword!=null&&!keyword.isBlank()) {
+//                String cleanedKeyword = keyword.trim();
+//                if(user.getUsername()==null||!user.getUsername().contains(cleanedKeyword))
+//                    match=false;
+//            }
+//
+//            if(minAge!=null){
+//                if(user.getAge()==null||user.getAge()<minAge)
+//                    match=false;
+//            }
+//            if(maxAge!=null){
+//                if(user.getAge()==null||user.getAge()>maxAge)
+//                    match=false;
+//            }
+//
+//            if(match)
+//                result.add(user);
+            if(matchUser(user,keyword,minAge,maxAge))
                 result.add(user);
         }
         return Result.success("search user ok",result);
+    }
+
+    public Result<List<UserResponse>> searchExact(String username){
+        if(username==null||username.isBlank())
+            return Result.fail("username is empty");
+
+        String cleanedUsername=username.trim();
+        List<UserResponse> result=new ArrayList<>();
+
+        for(UserResponse user:users){
+            if(user.getUsername()!=null&&user.getUsername().equals(cleanedUsername))
+                result.add(user);
+        }
+        return Result.success("search exact user ok",result);
+    }
+
+    public Result<Integer> searchCount(String keyword,Integer minAge,Integer maxAge){
+        Result<List<UserResponse>> result=search(keyword,minAge,maxAge);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+        return Result.success("search user count ok",result.getData().size());
+    }
+
+    public Result<UserResponse> searchFirst(String keyword,Integer minAge,Integer maxAge){
+        Result<List<UserResponse>> result=search(keyword,minAge,maxAge);
+
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+        if(result.getData().isEmpty())
+            return Result.fail("user not found");
+
+        return Result.success("search first user ok",result.getData().get(0));
+    }
+
+    public Result<String> searchSummary(String keyword,Integer minAge,Integer maxAge){
+        Result<List<UserResponse>> result=search(keyword,minAge,maxAge);
+        if(!result.getSuccess())
+            return Result.fail(result.getMsg());
+        String text = "matched count = "+result.getData().size();
+        return Result.success("search summary ok",text);
     }
 
 }
