@@ -52,6 +52,33 @@ public class UserService {
         return users.remove(index);
     }
 
+    private boolean matchUser(UserResponse user,String keyword,Integer minAge,Integer maxAge){
+        if(keyword!=null && !keyword.isBlank()){
+            String cleanedKeyword=keyword.trim();
+            if(user.getUsername()==null||!user.getUsername().contains(cleanedKeyword))
+                return false;
+        }
+        if(minAge!=null){
+            if(user.getAge()==null||user.getAge()<minAge)
+                return false;
+        }
+        if(maxAge!=null) {
+            if (user.getAge() == null || user.getAge() > maxAge)
+                return false;
+        }
+        return true;
+    }
+
+    private Result<Void> validateAgeRange(Integer minAge,Integer maxAge){
+        if(minAge!=null&&minAge<0)
+            return Result.fail("minAge is invalid");
+        if(maxAge!=null&&maxAge<0)
+            return Result.fail("maxAge is invalid");
+        if(minAge!=null&&maxAge!=null&&minAge>maxAge)
+            return Result.fail("age range is invalid");
+        return Result.success("age range ok",null);
+    }
+
     public Result<UserResponse> create(UserCreateRequest request) {
         if(request == null)
             return Result.fail("request is empty");
@@ -115,5 +142,19 @@ public class UserService {
         if(removeUser==null)
             return Result.fail("user not found");
         return Result.success("delete user ok",removeUser);
+    }
+
+    public Result<List<UserResponse>> search(String keyword,Integer minAge,Integer maxAge){
+        Result<Void> validateResult = validateAgeRange(minAge,maxAge);
+        if(!validateResult.getSuccess())
+            return Result.fail(validateResult.getMsg());
+
+        List<UserResponse> result=new ArrayList<>();
+
+        for(UserResponse user:users){
+            if(matchUser(user,keyword,minAge,maxAge))
+                result.add(user);
+        }
+        return Result.success("search user ok",result);
     }
 }
