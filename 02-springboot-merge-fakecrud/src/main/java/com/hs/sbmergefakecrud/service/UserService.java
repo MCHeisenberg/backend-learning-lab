@@ -37,6 +37,21 @@ public class UserService {
         return Result.success("user exists",user);
     }
 
+    private int findIndexById(Long id){
+        for(int i=0;i<users.size();i++){
+            if(users.get(i).getId().equals(id))
+                return i;
+        }
+        return -1;
+    }
+
+    private UserResponse removeUserOrNull(Long id){
+        int index=findIndexById(id);
+        if(index==-1)
+            return null;
+        return users.remove(index);
+    }
+
     public Result<UserResponse> create(UserCreateRequest request) {
         if(request == null)
             return Result.fail("request is empty");
@@ -91,6 +106,14 @@ public class UserService {
         user.setAge(request.getAge());
 
         return Result.success("update user ok",user);
+    }
 
+    public Result<UserResponse> deleteById(Long id){
+        if(isInvalidId(id))
+            return Result.fail("id is invalid");
+        UserResponse removeUser = removeUserOrNull(id);
+        if(removeUser==null)
+            return Result.fail("user not found");
+        return Result.success("delete user ok",removeUser);
     }
 }
