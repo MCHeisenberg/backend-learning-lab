@@ -24,3 +24,11 @@ CREATE DATABASE IF NOT EXISTS sb_mini_loops
 DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_unicode_loops;
 
+USE sb_mini_loops;
+DROP TABLE IF EXISTS app_user;
+CREATE TABLE app_user (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL ,
+    age INT NOT NULL ,
+    created_at DATETIME NOT NULL 
+)
