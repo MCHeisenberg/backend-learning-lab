@@ -18,8 +18,7 @@ public class DbUserService {
         for(UserEntity entity:entities){
             UserResponse response=new UserResponse(
                     entity.getId(),
-                    entity.getAge(),
-                    entity.getUsername()
+                    entity.getUsername(), entity.getAge()
             );
             responses.add(response);
         }
@@ -44,6 +43,10 @@ public class DbUserService {
         List<UserEntity> entities = userMapper.findAllOrderByAgeDesc();
         List<UserResponse> responses = toResponse(entities);
         return Result.success("query db user list order by age desc ok",responses);
+    }
+
+    public Result<Integer> count(){
+        return Result.success("query db user count ok",userMapper.count());
     }
 
 

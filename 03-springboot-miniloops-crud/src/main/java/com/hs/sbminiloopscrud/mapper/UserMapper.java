@@ -19,7 +19,10 @@ public interface UserMapper {
     @Select("""
             SELECT id,username,age,created_at,updated_at
             FROM app_user
-            ORDER BY AGE DESC
+            ORDER BY age DESC
             """)
     List<UserEntity> findAllOrderByAgeDesc();
+
+    @Select("SELECT COUNT(*) FROM app_user")
+    Integer count();
 }

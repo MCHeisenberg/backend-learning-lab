@@ -5,7 +5,7 @@ public class UserResponse {
     private Integer age;
     private String username;
 
-    public UserResponse(Long id, Integer age, String username) {
+    public UserResponse(Long id, String username, Integer age) {
         this.id = id;
         this.age = age;
         this.username = username;

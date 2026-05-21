@@ -30,4 +30,9 @@ public class DbUserController {
     public Result<List<UserResponse>> findAllOrderByAgeDesc(){
         return dbUserService.findAllOrderByAgeDesc();
     }
+
+    @GetMapping("/db/users/count")
+    public Result<Integer> count(){
+        return dbUserService.count();
+    }
 }
